@@ -4,318 +4,222 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Личный кабинет - NowCore</title>
-    <!-- Подключаем иконки Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        :root {
-            --bg-dark: #121218;
-            --bg-panel: #1C1C22;
-            --border-color: #2a2a2e;
-            --text-primary: #E0E0E0;
-            --text-secondary: #888;
-            --accent-blue: #3B82F6;
-            --accent-green: #10B981;
-        }
-
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-primary);
+            background-color: #0f1016;
+            color: #ffffff;
             font-family: 'Manrope', sans-serif;
             margin: 0;
-            padding: 0;
-            font-size: 15px;
+            padding: 25px;
+            box-sizing: border-box;
         }
-
-        .dashboard-layout {
+        .dashboard-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .header {
             display: flex;
-            min-height: 100vh;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
         }
-
-        /* --- Боковая панель (Sidebar) --- */
-        .sidebar {
-            width: 260px;
-            background-color: var(--bg-panel);
-            border-right: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            padding: 20px 0;
-        }
-
-        .sidebar-header {
-            padding: 0 25px;
-            margin-bottom: 30px;
-        }
-
-        .logo {
-            font-size: 1.6em;
-            font-weight: 800;
-            color: #fff;
-        }
-
-        .sidebar-nav {
-            flex-grow: 1;
-        }
-
-        .sidebar-nav ul {
-            list-style: none;
-            padding: 0;
+        .header h1 {
+            font-size: 2.2rem;
             margin: 0;
         }
-
-        .sidebar-nav li a {
-            display: flex;
-            align-items: center;
-            padding: 14px 25px;
-            color: var(--text-secondary);
+        .header .user-welcome {
+            font-size: 1.1rem;
+            color: #aeb1b8;
+        }
+        .btn {
+            background: #3C77E6;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
             text-decoration: none;
             font-weight: 500;
-            transition: all 0.2s ease;
-            border-left: 3px solid transparent;
+            transition: background-color 0.2s;
+            border: none;
+            cursor: pointer;
         }
-
-        .sidebar-nav li a:hover {
-            background-color: rgba(255, 255, 255, 0.03);
-            color: var(--text-primary);
-        }
-
-        .sidebar-nav li a.active {
-            background-color: rgba(59, 130, 246, 0.1);
-            color: #fff;
-            border-left-color: var(--accent-blue);
-        }
-
-        .sidebar-nav li a i {
-            width: 20px;
-            margin-right: 15px;
-            font-size: 1.1em;
-        }
-        
-        .user-profile {
-            padding: 20px 25px;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-        }
-        
-        .user-profile img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 15px;
-        }
-        
-        .user-profile .user-details span {
-            display: block;
-        }
-
-        .user-profile .user-name {
-            font-weight: 700;
-            color: #fff;
-        }
-        
-        .user-profile .user-email {
-            font-size: 0.85em;
-            color: var(--text-secondary);
-        }
-
-        /* --- Основной контент --- */
-        .main-content {
-            flex: 1;
-            padding: 30px 40px;
-            overflow-y: auto;
-        }
-
-        .content-header {
-            margin-bottom: 30px;
-        }
-
-        .content-header h1 {
-            font-size: 2em;
-            margin: 0;
-            font-weight: 700;
-        }
-
-        .widgets-grid {
+        .btn:hover { background-color: #3568cc; }
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 25px;
         }
-
         .card {
-            background-color: var(--bg-panel);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
+            background-color: #1C1C22;
             padding: 25px;
+            border-radius: 16px; /* iOS-style rounded corners */
+            border: 1px solid #2a2a2e;
         }
-        
         .card h3 {
             margin-top: 0;
             margin-bottom: 20px;
-            font-size: 1.2em;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 15px;
-        }
-        
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            font-size: 0.95em;
-        }
-        
-        .info-row span:first-child {
-            color: var(--text-secondary);
-        }
-        
-        .info-row .status.active {
-            color: var(--accent-green);
-            font-weight: 700;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 6px;
+            font-size: 1.1rem;
+            color: #aeb1b8;
             font-weight: 500;
-            transition: all 0.2s ease;
-            margin-top: 10px;
-            cursor: pointer;
-            border: none;
         }
-        
-        .btn-primary {
-            background-color: var(--accent-blue);
-            color: #fff;
+        .status { display: flex; align-items: center; gap: 10px; font-size: 1.2rem; font-weight: 700; }
+        .status-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .status.issued .status-dot { background-color: #22c55e; /* Green */ }
+        .status.not-issued .status-dot { background-color: #f97316; /* Orange */ }
+        .user-data p { margin: 5px 0; color: #aeb1b8; }
+        .user-data p span { color: #fff; font-weight: 500; }
+        .download-card { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        /* Modal Styles */
+        .modal {
+            display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            justify-content: center; align-items: center;
         }
-        
-        .btn-primary:hover {
-            background-color: #2563EB;
+        .modal.is-active { display: flex; }
+        .modal-content {
+            background-color: #1C1C22; border-radius: 16px; padding: 30px;
+            width: 90%; max-width: 600px; position: relative;
         }
-        
-        .btn-secondary {
-            background-color: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-        }
-        
-        .btn-secondary:hover {
-            background-color: var(--border-color);
-        }
-
-        /* Адаптивность */
-        @media (max-width: 900px) {
-            .dashboard-layout {
-                flex-direction: column;
-            }
-            .sidebar {
-                width: 100%;
-                height: auto;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                padding: 10px 20px;
-                box-sizing: border-box;
-            }
-            .sidebar-nav {
-                display: flex;
-            }
-            .sidebar-nav ul {
-                display: flex;
-            }
-            .sidebar-nav li a {
-                padding: 10px 15px;
-                border-left: none;
-                border-bottom: 3px solid transparent;
-            }
-            .sidebar-nav li a.active {
-                border-bottom-color: var(--accent-blue);
-            }
-            .sidebar-nav li a .link-text { display: none; }
-            .sidebar-header, .user-profile { display: none; }
-        }
-
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; color: #888; cursor: pointer; }
+        .changelog h2 { margin-top: 0; }
+        .changelog ul { padding-left: 20px; color: #aeb1b8; }
+        .changelog li { margin-bottom: 10px; }
+        /* Loading Skeleton */
+        .skeleton { background-color: #2a2a2e; border-radius: 6px; animation: pulse 1.5s infinite ease-in-out; }
+        .skeleton-text { height: 20px; width: 70%; }
+        .skeleton-dot { width: 12px; height: 12px; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
     </style>
 </head>
 <body>
-    <div class="dashboard-layout">
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <h2 class="logo">NowCore</h2>
+    <div class="dashboard-container">
+        <header class="header">
+            <div>
+                <h1>Личный кабинет</h1>
+                <span id="user-welcome" class="user-welcome">Загрузка...</span>
             </div>
-            <nav class="sidebar-nav">
-                <ul>
-                    <li><a href="#" class="active"><i class="fas fa-home"></i> <span class="link-text">Главная</span></a></li>
-                    <li><a href="#"><i class="fas fa-key"></i> <span class="link-text">Лицензия</span></a></li>
-                    <li><a href="#"><i class="fas fa-user-circle"></i> <span class="link-text">Профиль</span></a></li>
-                    <li><a href="#"><i class="fas fa-cog"></i> <span class="link-text">Настройки</span></a></li>
-                    <li><a href="#"><i class="fas fa-question-circle"></i> <span class="link-text">Поддержка</span></a></li>
-                </ul>
-            </nav>
-            <div class="user-profile">
-                <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="User Avatar"> <!-- Placeholder avatar -->
-                <div class="user-details">
-                    <span class="user-name">Иван Иванов</span>
-                    <span class="user-email">ivan.ivanov@example.com</span>
+            <button class="btn" id="changelog-btn">Изменения</button>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <h3>Статус программы</h3>
+                <div id="status-container" class="status">
+                    <div class="skeleton skeleton-dot"></div>
+                    <div class="skeleton skeleton-text" style="width: 150px;"></div>
                 </div>
             </div>
-        </aside>
 
-        <main class="main-content">
-            <header class="content-header">
-                <h1>Главная</h1>
-            </header>
-            
-            <div class="widgets-grid">
-                <div class="card">
-                    <h3>Лицензия</h3>
-                    <div class="info-row">
-                        <span>Статус</span>
-                        <span class="status active">Активна</span>
-                    </div>
-                    <div class="info-row">
-                        <span>Истекает</span>
-                        <span>31 декабря 2024</span>
-                    </div>
-                    <a href="#" class="btn btn-secondary">Управлять лицензией</a>
-                </div>
+            <div class="card download-card">
+                <h3>Загрузить NowCore</h3>
+                <a href="https://github.com/lazxvll/nowboost/releases/download/nowhere/NowCore.exe" class="btn" style="margin-top: 10px;">Скачать v0.0.6</a>
+            </div>
 
-                <div class="card">
-                    <h3>Последняя версия</h3>
-                    <div class="info-row">
-                        <span>NowCore</span>
-                        <span>v0.0.6</span>
-                    </div>
-                    <div class="info-row">
-                        <span>Дата выпуска</span>
-                        <span>15 октября 2023</span>
-                    </div>
-                    <a href="https://github.com/lazxvll/nowboost/releases/download/nowhere/NowCore.exe" class="btn btn-primary">Скачать NowCore.exe</a>
-                </div>
-
-                <div class="card">
-                    <h3>Информация о профиле</h3>
-                    <div class="info-row">
-                        <span>Имя</span>
-                        <span>Иван Иванов</span>
-                    </div>
-                    <div class="info-row">
-                        <span>Email</span>
-                        <span>ivan.ivanov@example.com</span>
-                    </div>
-                    <a href="#" class="btn btn-secondary">Редактировать</a>
-                </div>
-
-                <div class="card">
-                    <h3>Нужна помощь?</h3>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Если у вас возникли вопросы, обратитесь в нашу базу знаний или свяжитесь с поддержкой.</p>
-                    <a href="#" class="btn btn-secondary">Центр поддержки</a>
+            <div class="card" style="grid-column: 1 / -1;">
+                <h3>Ваши данные</h3>
+                <div id="user-data-container" class="user-data">
+                    <p>Никнейм: <span id="user-nickname" class="skeleton skeleton-text"></span></p>
+                    <p>HWID: <span id="user-hwid" class="skeleton skeleton-text"></span></p>
                 </div>
             </div>
-        </main>
+        </div>
     </div>
+
+    <!-- Changelog Modal -->
+    <div class="modal" id="changelog-modal">
+        <div class="modal-content">
+            <span class="modal-close" id="modal-close-btn">&times;</span>
+            <div class="changelog">
+                <h2>История изменений</h2>
+                <h4>Версия 0.0.6 (Текущая)</h4>
+                <ul>
+                    <li>Добавлен личный кабинет на сайте.</li>
+                    <li>Исправлены мелкие ошибки в оптимизации.</li>
+                    <li>Обновлен интерфейс.</li>
+                </ul>
+                <h4>Версия 0.0.5</h4>
+                <ul>
+                    <li>Первоначальный релиз.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Получение данных с сервера ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const nickname = params.get('nickname');
+
+            if (!nickname) {
+                // Если никнейма нет в URL, возвращаем на страницу входа
+                window.location.href = 'login.html';
+                return;
+            }
+
+            document.getElementById('user-welcome').textContent = `Здравствуйте, ${nickname}!`;
+
+            // Формируем URL для GET-запроса
+            const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxwIooOY-0zZoS72Vqh8WSBeYhbD6juWYdG1w5JlnTjnaELAnqEeLZzMsHGle6IRyHZ/exec';
+            const requestUrl = `${SCRIPT_URL}?nickname=${encodeURIComponent(nickname)}`;
+
+            fetch(requestUrl)
+                .then(response => response.json())
+                .then(res => {
+                    if (res.result === 'success') {
+                        const userData = res.data;
+                        const statusContainer = document.getElementById('status-container');
+                        const userNicknameEl = document.getElementById('user-nickname');
+                        const userHwidEl = document.getElementById('user-hwid');
+
+                        // Убираем анимацию загрузки
+                        userNicknameEl.classList.remove('skeleton', 'skeleton-text');
+                        userHwidEl.classList.remove('skeleton', 'skeleton-text');
+                        
+                        // Заполняем данные
+                        userNicknameEl.textContent = userData.nickname;
+                        userHwidEl.textContent = userData.hwid || 'Не привязан';
+                        
+                        // Определяем статус
+                        if (userData.hwid) {
+                            statusContainer.innerHTML = '<div class="status-dot"></div> Программа выдана';
+                            statusContainer.classList.add('issued');
+                        } else {
+                            statusContainer.innerHTML = '<div class="status-dot"></div> Программа не выдана';
+                            statusContainer.classList.add('not-issued');
+                        }
+
+                    } else {
+                        // Обработка ошибки, если пользователь не найден
+                        document.getElementById('status-container').textContent = 'Ошибка: пользователь не найден.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка при получении данных:', error);
+                    document.getElementById('status-container').textContent = 'Ошибка загрузки данных.';
+                });
+        });
+
+        // --- Логика для модального окна ---
+        const changelogBtn = document.getElementById('changelog-btn');
+        const modal = document.getElementById('changelog-modal');
+        const closeModalBtn = document.getElementById('modal-close-btn');
+
+        changelogBtn.addEventListener('click', () => {
+            modal.classList.add('is-active');
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            modal.classList.remove('is-active');
+        });
+        
+        // Закрытие модального окна по клику вне его
+        window.addEventListener('click', (event) => {
+            if (event.target == modal) {
+                modal.classList.remove('is-active');
+            }
+        });
+    </script>
 </body>
 </html>
