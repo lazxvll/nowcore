@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет - NowCore</title>
+    <!-- Подключаем иконки Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #121218;
+            --bg-panel: #1C1C22;
+            --border-color: #2a2a2e;
+            --text-primary: #E0E0E0;
+            --text-secondary: #888;
+            --accent-blue: #3B82F6;
+            --accent-green: #10B981;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Manrope', sans-serif;
+            margin: 0;
+            padding: 0;
+            font-size: 15px;
+        }
+
+        .dashboard-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* --- Боковая панель (Sidebar) --- */
+        .sidebar {
+            width: 260px;
+            background-color: var(--bg-panel);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+        }
+
+        .sidebar-header {
+            padding: 0 25px;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 1.6em;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .sidebar-nav {
+            flex-grow: 1;
+        }
+
+        .sidebar-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-nav li a {
+            display: flex;
+            align-items: center;
+            padding: 14px 25px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-nav li a:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+            color: var(--text-primary);
+        }
+
+        .sidebar-nav li a.active {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #fff;
+            border-left-color: var(--accent-blue);
+        }
+
+        .sidebar-nav li a i {
+            width: 20px;
+            margin-right: 15px;
+            font-size: 1.1em;
+        }
+        
+        .user-profile {
+            padding: 20px 25px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        
+        .user-profile .user-details span {
+            display: block;
+        }
+
+        .user-profile .user-name {
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .user-profile .user-email {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+        }
+
+        /* --- Основной контент --- */
+        .main-content {
+            flex: 1;
+            padding: 30px 40px;
+            overflow-y: auto;
+        }
+
+        .content-header {
+            margin-bottom: 30px;
+        }
+
+        .content-header h1 {
+            font-size: 2em;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .widgets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 25px;
+        }
+        
+        .card h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+        }
+        
+        .info-row span:first-child {
+            color: var(--text-secondary);
+        }
+        
+        .info-row .status.active {
+            color: var(--accent-green);
+            font-weight: 700;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            margin-top: 10px;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent-blue);
+            color: #fff;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2563EB;
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--border-color);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 900px) {
+            .dashboard-layout {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 20px;
+                box-sizing: border-box;
+            }
+            .sidebar-nav {
+                display: flex;
+            }
+            .sidebar-nav ul {
+                display: flex;
+            }
+            .sidebar-nav li a {
+                padding: 10px 15px;
+                border-left: none;
+                border-bottom: 3px solid transparent;
+            }
+            .sidebar-nav li a.active {
+                border-bottom-color: var(--accent-blue);
+            }
+            .sidebar-nav li a .link-text { display: none; }
+            .sidebar-header, .user-profile { display: none; }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="logo">NowCore</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#" class="active"><i class="fas fa-home"></i> <span class="link-text">Главная</span></a></li>
+                    <li><a href="#"><i class="fas fa-key"></i> <span class="link-text">Лицензия</span></a></li>
+                    <li><a href="#"><i class="fas fa-user-circle"></i> <span class="link-text">Профиль</span></a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> <span class="link-text">Настройки</span></a></li>
+                    <li><a href="#"><i class="fas fa-question-circle"></i> <span class="link-text">Поддержка</span></a></li>
+                </ul>
+            </nav>
+            <div class="user-profile">
+                <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="User Avatar"> <!-- Placeholder avatar -->
+                <div class="user-details">
+                    <span class="user-name">Иван Иванов</span>
+                    <span class="user-email">ivan.ivanov@example.com</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Главная</h1>
+            </header>
+            
+            <div class="widgets-grid">
+                <div class="card">
+                    <h3>Лицензия</h3>
+                    <div class="info-row">
+                        <span>Статус</span>
+                        <span class="status active">Активна</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Истекает</span>
+                        <span>31 декабря 2024</span>
+                    </div>
+                    <a href="#" class="btn btn-secondary">Управлять лицензией</a>
+                </div>
+
+                <div class="card">
+                    <h3>Последняя версия</h3>
+                    <div class="info-row">
+                        <span>NowCore</span>
+                        <span>v0.0.6</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Дата выпуска</span>
+                        <span>15 октября 2023</span>
+                    </div>
+                    <a href="https://github.com/lazxvll/nowboost/releases/download/nowhere/NowCore.exe" class="btn btn-primary">Скачать NowCore.exe</a>
+                </div>
+
+                <div class="card">
+                    <h3>Информация о профиле</h3>
+                    <div class="info-row">
+                        <span>Имя</span>
+                        <span>Иван Иванов</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Email</span>
+                        <span>ivan.ivanov@example.com</span>
+                    </div>
+                    <a href="#" class="btn btn-secondary">Редактировать</a>
+                </div>
+
+                <div class="card">
+                    <h3>Нужна помощь?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Если у вас возникли вопросы, обратитесь в нашу базу знаний или свяжитесь с поддержкой.</p>
+                    <a href="#" class="btn btn-secondary">Центр поддержки</a>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
