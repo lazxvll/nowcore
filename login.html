@@ -4,21 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вход - NowCore</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #121218;
-            background-image: radial-gradient(circle at 20% 20%,rgba(59,130,246,.15),transparent 40%);
-            color: #fff;
-            /* Убрали Google Fonts, используем стандартные */
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-        }
+        body { background-color: #121218; background-image: radial-gradient(circle at 20% 20%,rgba(59,130,246,.15),transparent 40%); color: #fff; font-family: 'Manrope',sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
         .login-container { background-color: #1c1c22; padding: 40px; border-radius: 12px; border: 1px solid #2a2a2e; width: 100%; max-width: 400px; text-align: center; }
         .login-container h1 { font-size: 2rem; margin-top: 0; margin-bottom: 30px; }
         .input-group { margin-bottom: 20px; text-align: left; }
@@ -34,8 +22,7 @@
 <body>
     <div class="login-container">
         <h1>Вход в кабинет</h1>
-        <!-- Самая обычная форма, которая отправляет данные напрямую -->
-        <form id="login-form" method="POST" action="https://script.google.com/macros/s/AKfycbxwIooOY-0zZoS72Vqh8WSBeYhbD6juWYdG1w5JlnTjnaELAnqEeLZzMsHGle6IRyHZ/exec">
+        <form id="login-form" method="POST" target="hidden-iframe">
             <div class="input-group">
                 <label for="nickname">Никнейм</label>
                 <input type="text" name="nickname" id="nickname" required>
@@ -48,13 +35,18 @@
             <button type="submit" class="login-button" disabled>Войти</button>
         </form>
     </div>
+    <!-- ФИНАЛЬНАЯ ВЕРСИЯ IFRAME СО ВСЕМИ РАЗРЕШЕНИЯМИ -->
+    <iframe name="hidden-iframe" style="display:none;" sandbox="allow-top-navigation allow-forms allow-scripts"></iframe>
 
     <script>
+        const loginForm = document.getElementById('login-form');
         const errorMessage = document.getElementById('error-message');
         const nicknameInput = document.getElementById('nickname');
         const hwidInput = document.getElementById('hwid');
 
-        // Проверяем URL на наличие метки об ошибке
+        // Вставьте сюда URL вашего развернутого скрипта
+        loginForm.action = "https://script.google.com/macros/s/AKfycbxwIooOY-0zZoS72Vqh8WSBeYhbD6juWYdG1w5JlnTjnaELAnqEeLZzMsHGle6IRyHZ/exec";
+
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('error') === '1') {
             errorMessage.textContent = 'Неверный никнейм или HWID.';
@@ -62,7 +54,6 @@
              errorMessage.textContent = 'Произошла системная ошибка.';
         }
         
-        // Валидация кнопки
         function validateForm() {
             const isFilled = nicknameInput.value.trim() !== '' && hwidInput.value.trim() !== '';
             document.querySelector('.login-button').disabled = !isFilled;
@@ -70,8 +61,7 @@
         nicknameInput.addEventListener('input', validateForm);
         hwidInput.addEventListener('input', validateForm);
 
-        // При отправке меняем текст кнопки
-        document.getElementById('login-form').addEventListener('submit', () => {
+        loginForm.addEventListener('submit', () => {
             document.querySelector('.login-button').disabled = true;
             document.querySelector('.login-button').textContent = 'Проверка...';
         });
