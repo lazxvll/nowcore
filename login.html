@@ -23,9 +23,7 @@
             <button type="submit" class="login-button" disabled>Войти</button>
         </form>
     </div>
-    <!-- ИЗМЕНЕНИЕ ЗДЕСЬ: добавлен атрибут sandbox -->
-    <iframe name="hidden-iframe" style="display:none;" sandbox="allow-top-navigation allow-forms"></iframe>
-
+    <iframe name="hidden-iframe" style="display:none;" sandbox="allow-top-navigation allow-forms allow-scripts"></iframe>
     <script>
         const loginForm = document.getElementById('login-form');
         const errorMessage = document.getElementById('error-message');
