@@ -4,13 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вход - NowCore</title>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>/* Стили остаются без изменений */ body{background-color:#121218;background-image:radial-gradient(circle at 20% 20%,rgba(59,130,246,.15),transparent 40%);color:#fff;font-family:'Manrope',sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;padding:20px;box-sizing:border-box}.login-container{background-color:#1c1c22;padding:40px;border-radius:12px;border:1px solid #2a2a2e;width:100%;max-width:400px;text-align:center}.login-container h1{font-size:2rem;margin-top:0;margin-bottom:30px}.input-group{margin-bottom:20px;text-align:left}.input-group label{display:block;margin-bottom:8px;color:#aeb1b8;font-size:.9rem}.input-group input{width:100%;padding:12px;background-color:#121218;border:1px solid #3a3a3e;border-radius:6px;color:#fff;font-size:1rem;box-sizing:border-box;transition:border-color .2s}.input-group input:focus{outline:0;border-color:#3b82f6}.login-button{width:100%;padding:14px;background-color:#3b82f6;color:#fff;border:none;border-radius:6px;font-size:1rem;font-weight:500;cursor:pointer;transition:background-color .2s}.login-button:hover:not(:disabled){background-color:#2563eb}.login-button:disabled{background-color:#373f50;color:#7d8590;cursor:not-allowed}.error-message{color:#ef4444;margin-top:15px;font-size:.9rem;height:20px}</style>
+    <style>
+        body {
+            background-color: #121218;
+            background-image: radial-gradient(circle at 20% 20%,rgba(59,130,246,.15),transparent 40%);
+            color: #fff;
+            /* Убрали Google Fonts, используем стандартные */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .login-container { background-color: #1c1c22; padding: 40px; border-radius: 12px; border: 1px solid #2a2a2e; width: 100%; max-width: 400px; text-align: center; }
+        .login-container h1 { font-size: 2rem; margin-top: 0; margin-bottom: 30px; }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; margin-bottom: 8px; color: #aeb1b8; font-size: .9rem; }
+        .input-group input { width: 100%; padding: 12px; background-color: #121218; border: 1px solid #3a3a3e; border-radius: 6px; color: #fff; font-size: 1rem; box-sizing: border-box; transition: border-color .2s; }
+        .input-group input:focus { outline: 0; border-color: #3b82f6; }
+        .login-button { width: 100%; padding: 14px; background-color: #3b82f6; color: #fff; border: none; border-radius: 6px; font-size: 1rem; font-weight: 500; cursor: pointer; transition: background-color .2s; }
+        .login-button:hover:not(:disabled) { background-color: #2563eb; }
+        .login-button:disabled { background-color: #373f50; color: #7d8590; cursor: not-allowed; }
+        .error-message { color: #ef4444; margin-top: 15px; font-size: .9rem; height: 20px; }
+    </style>
 </head>
 <body>
     <div class="login-container">
         <h1>Вход в кабинет</h1>
-        <form id="login-form" method="POST" target="hidden-iframe">
+        <!-- Самая обычная форма, которая отправляет данные напрямую -->
+        <form id="login-form" method="POST" action="https://script.google.com/macros/s/AKfycbxwIooOY-0zZoS72Vqh8WSBeYhbD6juWYdG1w5JlnTjnaELAnqEeLZzMsHGle6IRyHZ/exec">
             <div class="input-group">
                 <label for="nickname">Никнейм</label>
                 <input type="text" name="nickname" id="nickname" required>
@@ -23,23 +48,21 @@
             <button type="submit" class="login-button" disabled>Войти</button>
         </form>
     </div>
-    <iframe name="hidden-iframe" style="display:none;" sandbox="allow-top-navigation allow-forms allow-scripts"></iframe>
+
     <script>
-        const loginForm = document.getElementById('login-form');
         const errorMessage = document.getElementById('error-message');
-        const submitButton = loginForm.querySelector('.button');
         const nicknameInput = document.getElementById('nickname');
         const hwidInput = document.getElementById('hwid');
 
-        loginForm.action = "https://script.google.com/macros/s/AKfycbxwIooOY-0zZoS72Vqh8WSBeYhbD6juWYdG1w5JlnTjnaELAnqEeLZzMsHGle6IRyHZ/exec";
-
+        // Проверяем URL на наличие метки об ошибке
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('error') === '1') {
             errorMessage.textContent = 'Неверный никнейм или HWID.';
         } else if (urlParams.get('error') === '2') {
-             errorMessage.textContent = 'Произошла системная ошибка. Попробуйте снова.';
+             errorMessage.textContent = 'Произошла системная ошибка.';
         }
         
+        // Валидация кнопки
         function validateForm() {
             const isFilled = nicknameInput.value.trim() !== '' && hwidInput.value.trim() !== '';
             document.querySelector('.login-button').disabled = !isFilled;
@@ -47,7 +70,8 @@
         nicknameInput.addEventListener('input', validateForm);
         hwidInput.addEventListener('input', validateForm);
 
-        loginForm.addEventListener('submit', () => {
+        // При отправке меняем текст кнопки
+        document.getElementById('login-form').addEventListener('submit', () => {
             document.querySelector('.login-button').disabled = true;
             document.querySelector('.login-button').textContent = 'Проверка...';
         });
