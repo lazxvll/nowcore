@@ -23,7 +23,8 @@
             <button type="submit" class="login-button" disabled>Войти</button>
         </form>
     </div>
-    <iframe name="hidden-iframe" style="display:none;"></iframe>
+    <!-- ИЗМЕНЕНИЕ ЗДЕСЬ: добавлен атрибут sandbox -->
+    <iframe name="hidden-iframe" style="display:none;" sandbox="allow-top-navigation allow-forms"></iframe>
 
     <script>
         const loginForm = document.getElementById('login-form');
@@ -32,10 +33,8 @@
         const nicknameInput = document.getElementById('nickname');
         const hwidInput = document.getElementById('hwid');
 
-        // Устанавливаем URL для отправки формы
         loginForm.action = "https://script.google.com/macros/s/AKfycbxwIooOY-0zZoS72Vqh8WSBeYhbD6juWYdG1w5JlnTjnaELAnqEeLZzMsHGle6IRyHZ/exec";
 
-        // Проверяем URL на наличие метки об ошибке при загрузке страницы
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('error') === '1') {
             errorMessage.textContent = 'Неверный никнейм или HWID.';
@@ -43,7 +42,6 @@
              errorMessage.textContent = 'Произошла системная ошибка. Попробуйте снова.';
         }
         
-        // Функция для (де)активации кнопки
         function validateForm() {
             const isFilled = nicknameInput.value.trim() !== '' && hwidInput.value.trim() !== '';
             document.querySelector('.login-button').disabled = !isFilled;
@@ -51,7 +49,6 @@
         nicknameInput.addEventListener('input', validateForm);
         hwidInput.addEventListener('input', validateForm);
 
-        // При отправке формы показываем "Проверка..."
         loginForm.addEventListener('submit', () => {
             document.querySelector('.login-button').disabled = true;
             document.querySelector('.login-button').textContent = 'Проверка...';
