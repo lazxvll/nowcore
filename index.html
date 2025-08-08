@@ -1,114 +1,240 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>NowCore — Скачать</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            min-height: 100vh;
-            margin: 0;
-            color: #fff;
-            font-family: 'Segoe UI', 'Arial', sans-serif;
-            background: radial-gradient(circle at 20% 20%, #1a2740 0%, #181a1f 60%, #16171d 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            max-width: 1100px;
-            padding: 40px 20px;
-            box-sizing: border-box;
-        }
-        .left {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: center;
-            min-width: 320px;
-        }
-        .title {
-            font-size: 2.8rem;
-            font-weight: 700;
-            margin-bottom: 24px;
-            letter-spacing: 1px;
-        }
-        .desc {
-            color: #b0b6c3;
-            font-size: 1.15rem;
-            margin-bottom: 36px;
-            max-width: 480px;
-            line-height: 1.6;
-        }
-        .download-btn {
-            display: inline-block;
-            background: linear-gradient(90deg, #233a5a 0%, #395b9b 100%);
-            color: #fff;
-            border: none;
-            border-radius: 12px;
-            padding: 16px 44px;
-            font-size: 1.15rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            transition: opacity 0.18s, box-shadow 0.18s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-            text-decoration: none;
-        }
-        .download-btn:hover {
-            opacity: 0.93;
-            box-shadow: 0 4px 16px rgba(35,58,90,0.18);
-        }
-        .right {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .screenshot {
-            border-radius: 10px;
-            box-shadow: 0 4px 32px rgba(0,0,0,0.7);
-            max-width: 100%;
-            max-height: 420px;
-        }
-        @media (max-width: 900px) {
-            .container {
-                flex-direction: column;
-                align-items: center;
-                padding: 20px 5px;
-            }
-            .left, .right {
-                width: 100%;
-                max-width: none;
-                padding: 0;
-            }
-            .left {
-                align-items: center;
-                text-align: center;
-                margin-bottom: 32px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NowCore — Скачать</title>
+  <style>
+    :root{
+      --bg:#0f1011;
+      --bg2:#121315;
+      --panel:#1a1c1f;
+      --border:#2a2f36;
+      --text:#e7e8ea;
+      --muted:#a5abb4;
+      --accent:#98B4CC; 
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(70vmax 70vmax at 80% 10%, rgba(152,180,204,.06), transparent 60%),
+        radial-gradient(50vmax 50vmax at 10% 90%, rgba(110,130,150,.06), transparent 60%),
+        var(--bg);
+    }
+
+    .topbar{
+      position:sticky; top:0; z-index:10;
+      background: rgba(12,13,15,.85);
+      border-bottom:1px solid #1a1d22;
+      backdrop-filter: saturate(130%) blur(6px);
+    }
+    .topbar .row{
+      max-width:1100px; margin:0 auto; padding:12px 18px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .brand{
+      text-decoration:none; color:#fff; font-weight:700; letter-spacing:.4px;
+    }
+    .nav{display:flex; gap:16px}
+    .nav a, .nav button{
+      background:transparent; color:var(--muted);
+      border:0; padding:6px 8px; border-radius:8px; cursor:pointer;
+      font: inherit;
+      transition:color .15s, background .15s;
+    }
+    .nav a:hover, .nav button:hover{ color:#fff; background:#1a1c20; }
+
+    .wrap{
+      min-height:calc(100vh - 56px);
+      display:grid; place-items:center;
+      padding:36px 16px 46px;
+    }
+
+    .panel{
+      width:min(1000px, 92vw);
+      background: linear-gradient(0deg, #17191b, #1b1d20);
+      border:1px solid var(--border);
+      border-radius:10px;
+      box-shadow: 0 10px 40px rgba(0,0,0,.55);
+      padding:18px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:20px;
+      align-items:center;
+    }
+
+    .title{ font-size:2.2rem; font-weight:800; margin:0 0 12px; }
+    .desc{ color:var(--muted); font-size:1.05rem; margin:0 0 14px; line-height:1.6; max-width:560px; }
+    .chips{ display:flex; gap:8px; flex-wrap:wrap; margin:8px 0 16px; }
+    .chip{
+      display:inline-flex; gap:8px; align-items:center;
+      color:#d8dde5; background:#181a1d; border:1px solid #22262c;
+      padding:6px 10px; border-radius:999px; font-size:.92rem;
+    }
+    .dot{ width:8px; height:8px; border-radius:50%; background:var(--accent); box-shadow:0 0 10px rgba(152,180,204,.8); }
+
+    .buttons{ display:flex; gap:10px; flex-wrap:wrap; }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      border-radius:8px; height:42px; padding:0 22px; cursor:pointer; font-weight:700;
+      border:1px solid transparent; transition: filter .15s, transform .04s, background .15s, border-color .15s;
+      text-decoration:none;
+    }
+    .btn:active{ transform: translateY(1px); }
+    .btn-primary{
+      background: var(--accent);
+      color:#0f1418;
+      box-shadow: inset 0 -2px 0 rgba(0,0,0,.15), 0 4px 18px rgba(152,180,204,.25);
+    }
+    .btn-primary:hover{ filter: brightness(.96); box-shadow: inset 0 -2px 0 rgba(0,0,0,.18), 0 6px 22px rgba(152,180,204,.32); }
+    .btn-ghost{
+      background:#181a1d; color:#dfe2e6; border-color:#22262c;
+    }
+    .btn-ghost:hover{ background:#1d2023; }
+      
+    .shot{
+      border-radius:8px;
+      background:#0c0d0f;
+      border:1px solid #20252b;
+      box-shadow: 0 12px 30px rgba(0,0,0,.5);
+      overflow:hidden;
+      display:block;
+      max-height:500px; 
+    }
+    .shot img{ display:block; max-width:100%; height:auto; }
+    .modal{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:1000; }
+    .modal.show{ display:flex; }
+    .modal-backdrop{ position:absolute; inset:0; background: rgba(0,0,0,.55); backdrop-filter: blur(2px); }
+    .modal-dialog{
+      position:relative; width:min(720px,92vw); max-height:82vh;
+      background: #17191c; border:1px solid #23282f; border-radius:10px; padding:18px;
+      box-shadow: 0 10px 40px rgba(0,0,0,.6); display:flex; flex-direction:column; overflow:hidden;
+    }
+    .modal-title{ margin:0 0 6px; font-size:1.2rem; font-weight:700; }
+    .modal-sub{ margin:0 0 10px; color:var(--muted); font-size:.95rem; }
+    .modal-content{ overflow:auto; padding-right:2px; }
+    .modal-close{
+      position:absolute; top:10px; right:10px; width:34px; height:34px; border-radius:8px;
+      border:1px solid #23282f; background:transparent; color:#dfe2e6; cursor:pointer;
+    }
+    .modal-close:hover{ background:#1e2024; }
+
+    .cl{ display:flex; flex-direction:column; gap:12px; }
+    .cl-item{ background:#171a1d; border:1px solid #22262c; border-radius:8px; padding:10px 12px; }
+    .cl-head{ display:flex; gap:10px; align-items:center; margin-bottom:6px; }
+    .cl-ver{ font-weight:700; }
+    .cl-date{ color:var(--muted); font-size:.95rem; }
+    .cl-tags{ margin-left:auto; display:flex; gap:6px; }
+    .tag{ font-size:.75rem; padding:2px 8px; border-radius:999px; color:#0f1418; background:var(--accent); }
+
+    @media (max-width: 900px){
+      .grid{ grid-template-columns: 1fr; }
+      .title{ font-size:2rem; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="left">
-            <div class="title">NowCore</div>
-            <div class="desc">
-                Независимо от вашего уровня опыта, NowCore предоставляет мощные инструменты для ускорения загрузки системы, оптимизации работы приложений и общего повышения эффективности вашего компьютера.
-            </div>
-            <a href="https://github.com/lazxvll/nowboost/releases/download/nowhere/NowCore.exe" class="download-btn" download>Скачать для Windows 10</a>
-        </div>
-        <div class="right">
-            <img src="https://github.com/lazxvll/nowcore/blob/main/image_2025-08-03_20-38-07.png?raw=true" alt="Скриншот программы NowCore" class="screenshot">
-        </div>
+  <header class="topbar">
+    <div class="row">
+      <a class="brand" href="#">NOWCORE</a>
+      <nav class="nav" aria-label="Навигация">
+        <a href="#">Главная</a>
+        <button id="openChangelogTop" type="button">Изменения</button>
+      </nav>
     </div>
+  </header>
+
+  <main class="wrap">
+    <section class="panel" aria-label="Секция загрузки">
+      <div class="grid">
+        <div>
+          <h1 class="title">NowCore</h1>
+          <p class="desc">
+            Независимо от вашего уровня опыта, NowCore предоставляет мощные инструменты для ускорения загрузки системы,
+            оптимизации работы приложений и общего повышения эффективности вашего компьютера.
+          </p>
+
+          <div class="chips">
+            <span class="chip"><span class="dot" aria-hidden="true"></span> v1.0.0</span>
+            <span class="chip">Windows 10 x64</span>
+            <span class="chip">~2.9 МБ</span>
+          </div>
+
+          <div class="buttons">
+            <a class="btn btn-primary" href="https://github.com/lazxvll/nowboost/releases/download/nowhere/NowCore.exe" download>
+              Скачать
+            </a>
+            <button class="btn btn-ghost" id="openChangelog" type="button">Список изменений</button>
+          </div>
+        </div>
+
+        <a class="shot" href="https://github.com/lazxvll/nowcore/blob/main/image_2025-08-03_20-38-07.png?raw=true" target="_blank" rel="noopener">
+          <img src="https://github.com/lazxvll/nowcore/blob/main/image_2025-08-03_20-38-07.png?raw=true"
+               alt="Скриншот программы NowCore" loading="lazy" decoding="async">
+        </a>
+      </div>
+    </section>
+  </main>
+    
+  <div class="modal" id="changelogModal" aria-hidden="true" role="dialog" aria-labelledby="changelogTitle" aria-modal="true">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-dialog" role="document">
+      <button class="modal-close" aria-label="Закрыть" data-close>&times;</button>
+      <h2 class="modal-title" id="changelogTitle">Список изменений</h2>
+      <p class="modal-sub">История обновлений NowCore</p>
+      <div class="modal-content">
+        <div class="cl" id="changelogList">
+          <div class="cl-item">
+            <div class="cl-head">
+              <div class="cl-ver">v0.0.7</div>
+              <div class="cl-date">08.08.2025</div>
+              <div class="cl-tags"><span class="tag">info</span></div>
+            </div>
+            <ul style="margin:0; padding-left:18px;">
+              <li>Обновление сайта.</li>
+              <li>Программа все еще в бета версии.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const modal = document.getElementById('changelogModal');
+      const openers = [document.getElementById('openChangelog'), document.getElementById('openChangelogTop')].filter(Boolean);
+      const closeEls = modal.querySelectorAll('[data-close]');
+      let lastFocus = null;
+
+      function openModal(){
+        lastFocus = document.activeElement;
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden','false');
+        document.addEventListener('keydown', onEsc);
+        modal.querySelector('.modal-close')?.focus();
+      }
+      function closeModal(){
+        modal.classList.remove('show');
+        modal.setAttribute('aria-hidden','true');
+        document.removeEventListener('keydown', onEsc);
+        if (lastFocus) lastFocus.focus();
+      }
+      function onEsc(e){ if(e.key === 'Escape') closeModal(); }
+
+      openers.forEach(b => b.addEventListener('click', openModal));
+      closeEls.forEach(el => el.addEventListener('click', closeModal));
+      modal.addEventListener('click', (e) => {
+        const dialog = modal.querySelector('.modal-dialog');
+        if (!dialog.contains(e.target)) closeModal();
+      });
+    })();
+  </script>
 </body>
 </html>
-
-
