@@ -6,7 +6,43 @@
 <title>NowCore</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐈‍⬛</text></svg>">
 
+<script>
+(function() {
+    var t = localStorage.getItem('theme');
+    if (!t) {
+        t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    }
+    document.documentElement.setAttribute('data-theme', t);
+})();
+</script>
+
 <style>
+    :root {
+        --bg: #ffffff;
+        --text: #1a1a1a;
+        --text-muted: rgba(0,0,0,0.45);
+        --text-dim: rgba(0,0,0,0.25);
+        --btn-bg: rgba(0,0,0,0.06);
+        --btn-border: rgba(0,0,0,0.10);
+        --btn-hover: rgba(0,0,0,0.10);
+        --btn-color: #1a1a1a;
+        --img-border: rgba(0,0,0,0.08);
+        --footer-color: rgba(0,0,0,0.15);
+    }
+
+    [data-theme="dark"] {
+        --bg: rgb(16, 16, 16);
+        --text: #ffffff;
+        --text-muted: rgba(255,255,255,0.45);
+        --text-dim: rgba(255,255,255,0.25);
+        --btn-bg: rgba(255,255,255,0.06);
+        --btn-border: rgba(255,255,255,0.10);
+        --btn-hover: rgba(255,255,255,0.10);
+        --btn-color: #ffffff;
+        --img-border: rgba(255,255,255,0.08);
+        --footer-color: rgba(255,255,255,0.15);
+    }
+
     * {
         margin: 0;
         padding: 0;
@@ -14,12 +50,13 @@
     }
 
     body {
-        background: rgb(16, 16, 16);
-        color: #fff;
+        background: var(--bg);
+        color: var(--text);
         font-family: "Cascadia Code", Consolas, monospace;
         min-height: 100vh;
         display: flex;
         flex-direction: column;
+        transition: background .3s, color .3s;
     }
 
     main {
@@ -63,7 +100,7 @@
     .beta span {
         animation: beta-float 2s infinite;
         opacity: 0;
-        color: rgba(255,255,255,0.55);
+        color: var(--text-muted);
         font-weight: 400;
     }
 
@@ -105,7 +142,7 @@
     }
 
     .cat {
-        color: rgba(255,255,255,0.45);
+        color: var(--text-muted);
         font-size: 13px;
         line-height: 1.1;
         white-space: pre;
@@ -125,25 +162,136 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: rgba(255,255,255,0.06);
-        border: 1px solid rgba(255,255,255,0.10);
+        background: var(--btn-bg);
+        border: 1px solid var(--btn-border);
         border-radius: 8px;
-        color: #fff;
+        color: var(--btn-color);
         text-decoration: none;
         transition: .2s ease;
     }
 
     .btn:hover {
-        background: rgba(255,255,255,0.10);
+        background: var(--btn-hover);
     }
 
     .btn svg {
         opacity: .8;
     }
 
+    .footer-theme {
+        background: none;
+        border: none;
+        color: inherit;
+        cursor: pointer;
+        padding: 0;
+        vertical-align: middle;
+        display: inline-flex;
+        align-items: center;
+        transition: opacity .2s;
+    }
+
+    .footer-theme:hover {
+        opacity: .6;
+    }
+
+    .btn-soon {
+        opacity: .35;
+        cursor: not-allowed;
+    }
+
+    .btn-soon:hover {
+        opacity: .5;
+    }
+
+    .btn-changelog {
+        cursor: pointer;
+    }
+
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.5);
+        z-index: 100;
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(4px);
+    }
+
+    .modal-overlay.active {
+        display: flex;
+    }
+
+    .modal {
+        background: var(--bg);
+        border: 1px solid var(--btn-border);
+        border-radius: 12px;
+        width: 380px;
+        max-width: 90vw;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0,0,0,.4);
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--btn-border);
+    }
+
+    .modal-title {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .modal-close {
+        background: none;
+        border: none;
+        color: var(--text-dim);
+        font-size: 22px;
+        cursor: pointer;
+        line-height: 1;
+        padding: 0 4px;
+        transition: color .2s;
+    }
+
+    .modal-close:hover {
+        color: var(--text);
+    }
+
+    .modal-body {
+        padding: 32px 20px;
+        text-align: center;
+    }
+
+    .modal-soon {
+        color: var(--text-dim);
+        font-size: 14px;
+    }
+
+    .icon-sun,
+    .icon-moon {
+        display: none;
+    }
+
+    /* Светлая тема — показываем луну */
+    .footer-theme .icon-moon {
+        display: inline-flex;
+    }
+
+    /* Тёмная тема — показываем солнце */
+    [data-theme="dark"] .footer-theme .icon-moon {
+        display: none;
+    }
+
+    [data-theme="dark"] .footer-theme .icon-sun {
+        display: inline-flex;
+    }
+
     .meta {
         font-size: 12px;
-        color: rgba(255,255,255,0.25);
+        color: var(--text-dim);
         line-height: 1.6;
     }
 
@@ -151,14 +299,14 @@
         width: 100%;
         display: block;
         border-radius: 10px;
-        border: 1px solid rgba(255,255,255,0.08);
+        border: 1px solid var(--img-border);
     }
 
     footer {
         text-align: center;
         padding: 20px;
         font-size: 12px;
-        color: rgba(255,255,255,0.15);
+        color: var(--footer-color);
     }
 
     @media (max-width: 600px) {
@@ -205,8 +353,8 @@
 
         <div class="actions">
 
-            <!-- Скачать -->
-            <a href="NowCore.exe" class="btn" download aria-label="Скачать">
+            <!-- Скачать (soon) -->
+            <a href="#" class="btn btn-soon" onclick="return false" title="Скоро" aria-label="Скачать">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                     <path d="M12 4V16M12 16L7 11M12 16L17 11M5 20H19"
                           stroke="currentColor"
@@ -223,6 +371,38 @@
                 </svg>
             </a>
 
+            <!-- Donate -->
+            <a href="https://steamcommunity.com/tradeoffer/new/?partner=324269455&token=09MTw2th" class="btn" target="_blank" aria-label="Donate">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="1" x2="12" y2="23"/>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+            </a>
+
+            <!-- Changelog -->
+            <button class="btn btn-changelog" id="changelogBtn" title="Changelog" aria-label="Changelog">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                    <polyline points="10 9 9 9 8 9"/>
+                </svg>
+            </button>
+
+            <!-- Changelog Modal -->
+            <div class="modal-overlay" id="changelogModal">
+                <div class="modal">
+                    <div class="modal-header">
+                        <span class="modal-title">Changelog</span>
+                        <button class="modal-close" id="changelogClose">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="modal-soon">Скоро...</p>
+                    </div>
+                </div>
+            </div>
+
             <div class="meta">
                 Win 10/11<br>
                 Version 0.0.1 (beta)
@@ -230,14 +410,65 @@
 
         </div>
 
-        <img src="https://github.com/lazxvll/nowcore/blob/main/menu.jpg?raw=true" alt="NowCore" class="menu-image">
+        <img src="https://github.com/lazxvll/nowcore/blob/main/menu_dark.png?raw=true" alt="NowCore" class="menu-image" id="menuImg" style="opacity:0">
 
     </div>
 </main>
 
 <footer>
-    NowCore · 2026
+    NowCore · 2026 ·
+    <button class="footer-theme" id="themeToggle" aria-label="Сменить тему">
+        <svg class="icon-sun" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        <svg class="icon-moon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+    </button>
 </footer>
+
+<script>
+(function() {
+    var toggle = document.getElementById('themeToggle');
+    var img = document.getElementById('menuImg');
+    var saved = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+
+    function apply(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        img.src = theme === 'dark'
+            ? 'https://github.com/lazxvll/nowcore/blob/main/menu_dark.png?raw=true'
+            : 'https://github.com/lazxvll/nowcore/blob/main/menu_white.png?raw=true';
+        img.style.opacity = '1';
+    }
+
+    apply(saved);
+
+    toggle.addEventListener('click', function() {
+        var current = document.documentElement.getAttribute('data-theme');
+        var next = current === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('theme', next);
+        apply(next);
+    });
+
+    var changelogBtn = document.getElementById('changelogBtn');
+    var changelogModal = document.getElementById('changelogModal');
+    var changelogClose = document.getElementById('changelogClose');
+
+    changelogBtn.addEventListener('click', function() {
+        changelogModal.classList.add('active');
+    });
+
+    changelogClose.addEventListener('click', function() {
+        changelogModal.classList.remove('active');
+    });
+
+    changelogModal.addEventListener('click', function(e) {
+        if (e.target === changelogModal) {
+            changelogModal.classList.remove('active');
+        }
+    });
+})();
+</script>
 
 </body>
 </html>
