@@ -379,7 +379,7 @@
         <div class="actions">
 
             <!-- Скачать -->
-            <a href="https://github.com/lazxvll/nowcore/releases/download/nowhere/NowCore.exe" class="btn" download aria-label="Скачать">
+            <a href="https://github.com/lazxvll/nowcore/releases/latest" class="btn" id="downloadBtn" download aria-label="Скачать">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                     <path d="M12 4V16M12 16L7 11M12 16L17 11M5 20H19"
                           stroke="currentColor"
@@ -508,6 +508,15 @@
             changelogModal.classList.remove('active');
         }
     });
+
+    fetch('https://api.github.com/repos/lazxvll/nowcore/releases/latest')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            var asset = data.assets && data.assets[0];
+            if (asset) {
+                document.getElementById('downloadBtn').href = asset.browser_download_url;
+            }
+        });
 })();
 </script>
 
