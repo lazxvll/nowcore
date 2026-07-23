@@ -217,9 +217,9 @@
         background: var(--bg);
         border: 1px solid var(--btn-border);
         border-radius: 16px;
-        width: 380px;
+        width: 520px;
         max-width: 90vw;
-        max-height: 70vh;
+        max-height: 75vh;
         overflow: hidden;
         box-shadow: 0 20px 60px rgba(0,0,0,.4);
     }
@@ -284,14 +284,50 @@
         font-size: 13px;
         color: var(--text-muted);
         padding: 4px 0;
-        padding-left: 14px;
+        padding-left: 3ch;
         position: relative;
     }
 
     .cl-list li::before {
-        content: "·";
+        content: "-";
         position: absolute;
         left: 0;
+        width: 2ch;
+        text-align: left;
+        color: var(--text-dim);
+    }
+
+    .cl-section {
+        font-size: 13px;
+        color: var(--text-muted);
+        font-weight: 600;
+        padding: 8px 0 4px 3ch;
+        position: relative;
+    }
+
+    .cl-section::before {
+        content: "##";
+        position: absolute;
+        left: 0;
+        width: 2ch;
+        text-align: left;
+        color: var(--text-dim);
+    }
+
+    .cl-sub {
+        font-size: 12px;
+        color: var(--text-muted);
+        padding: 6px 0 2px 3ch;
+        font-weight: 600;
+        position: relative;
+    }
+
+    .cl-sub::before {
+        content: "/";
+        position: absolute;
+        left: 0;
+        width: 2ch;
+        text-align: left;
         color: var(--text-dim);
     }
 
@@ -424,6 +460,56 @@
                     </div>
                     <div class="modal-body">
                         <div class="cl-entry">
+                            <div class="cl-date">23.07.2026</div>
+                            <div class="cl-version">v0.0.3</div>
+                            <div class="cl-section">Очистка</div>
+                            <ul class="cl-list">
+                                <li>Убраны консольные окна, при очистке.</li>
+                            </ul>
+                            <div class="cl-section">Глобально</div>
+                            <ul class="cl-list">
+                                <li>Исправление мелких багов.</li>
+                                <li>И еще много изменений, я потерял полный changelog ;)</li>
+                            </ul>
+                            <div class="cl-section">Твики</div>
+                            <div class="cl-sub">Система</div>
+                            <ul class="cl-list">
+                                <li>Обновлен Отключить Задачи NGEN и фоновой оптимизации .NET</li>
+                            </ul>
+                            <div class="cl-sub">NTFS</div>
+                            <ul class="cl-list">
+                                <li>Добавлен NTFS в невыгружаемую память</li>
+                                <li>Добавлен Отключить Last Access Time</li>
+                                <li>Добавлен Отключить Dev Drive</li>
+                                <li>Добавлен Включить TRIM для SSD</li>
+                                <li>Обновлен Включить Использование памяти NTFS</li>
+                                <li>Обновлен Отключить 8.3 имена</li>
+                                <li>Обновлен Отключить Задачи проверки диска</li>
+                                <li>Обновлен Увеличить Резерв MFT</li>
+                            </ul>
+                            <div class="cl-sub">Периферия</div>
+                            <ul class="cl-list">
+                                <li>Добавлен Отключить Синхронизацию настроек устройств ввода</li>
+                            </ul>
+                            <div class="cl-sub">Устройства</div>
+                            <ul class="cl-list">
+                                <li>Обновлен Отключить Дополнительные компоненты виртуализации</li>
+                                <li>Обновлен Отключить Bluetooth</li>
+                                <li>Обновлен Отключить Hyper-V и гипервизор</li>
+                            </ul>
+                            <div class="cl-sub">Компоненты</div>
+                            <ul class="cl-list">
+                                <li>Добавлен Отключить Задачи OneDrive</li>
+                                <li>Добавлен Отключить Плановые проверки Защитника Windows</li>
+                                <li>Обновлен Отключить Обновление Microsoft Edge</li>
+                                <li>Обновлен Отключить Задачи modern apps и AppX</li>
+                                <li>Обновлен Отключить Задачи совместимости Windows</li>
+                                <li>Обновлен Отключить Телеметрию Windows</li>
+                                <li>Обновлен Отключить Родительский контроль</li>
+                                <li>Обновлен Отключить Карты и офлайн-карты</li>
+                            </ul>
+                        </div>
+                        <div class="cl-entry">
                             <div class="cl-date">24.06.2026</div>
                             <div class="cl-version">v0.0.2</div>
                             <ul class="cl-list">
@@ -446,7 +532,7 @@
 
             <div class="meta">
                 Win 10/11<br>
-                Version 0.0.2 (beta)
+                Version 0.0.3 (beta)
             </div>
 
         </div>
