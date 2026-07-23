@@ -9,9 +9,7 @@
 <script>
 (function() {
     var t = localStorage.getItem('theme');
-    if (!t) {
-        t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-    }
+    if (!t) t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', t);
 })();
 </script>
@@ -31,7 +29,7 @@
     }
 
     [data-theme="dark"] {
-        --bg: rgb(16, 16, 16);
+        --bg: rgb(16,16,16);
         --text: #ffffff;
         --text-muted: rgba(255,255,255,0.45);
         --text-dim: rgba(255,255,255,0.25);
@@ -43,11 +41,7 @@
         --footer-color: rgba(255,255,255,0.15);
     }
 
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
         background: var(--bg);
@@ -57,20 +51,55 @@
         display: flex;
         flex-direction: column;
         transition: background .3s, color .3s;
+        scrollbar-gutter: stable;
     }
+
+    .tabs-sticky {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: var(--bg);
+        transition: background .3s;
+        border-bottom: 1px solid var(--btn-border);
+    }
+
+    .tabs-inner {
+        max-width: 650px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+    }
+
+    .tab {
+        background: none;
+        border: none;
+        border-bottom: 2px solid transparent;
+        color: var(--text-muted);
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 14px;
+        padding: 12px 20px;
+        transition: color .2s, border-color .2s;
+        margin-bottom: -1px;
+    }
+
+    .tab:hover { color: var(--text); }
+    .tab.tab-active { color: var(--text); border-bottom-color: var(--text); }
 
     main {
         flex: 1;
         display: flex;
         justify-content: center;
-        align-items: center;
-        padding: 80px 20px;
+        padding: 48px 20px 80px;
     }
 
     .content {
         width: 100%;
         max-width: 650px;
     }
+
+    .tab-body { display: none; }
+    .tab-body.tab-body-active { display: block; }
 
     .title-row {
         display: flex;
@@ -104,41 +133,53 @@
         font-weight: 400;
     }
 
-    .beta span:nth-child(1) {
-        animation-delay: 0s;
-        font-size: 14px;
-    }
-
-    .beta span:nth-child(2) {
-        animation-delay: 0.3s;
-        font-size: 16px;
-    }
-
-    .beta span:nth-child(3) {
-        animation-delay: 0.6s;
-        font-size: 18px;
-    }
-
-    .beta span:nth-child(4) {
-        animation-delay: 0.9s;
-        font-size: 20px;
-    }
+    .beta span:nth-child(1) { animation-delay: 0s;   font-size: 14px; }
+    .beta span:nth-child(2) { animation-delay: 0.3s; font-size: 16px; }
+    .beta span:nth-child(3) { animation-delay: 0.6s; font-size: 18px; }
+    .beta span:nth-child(4) { animation-delay: 0.9s; font-size: 20px; }
 
     @keyframes beta-float {
-        0% {
-            opacity: 0;
-            transform: translateY(0);
-        }
-        20% {
-            opacity: 1;
-        }
-        80% {
-            opacity: 1;
-        }
-        100% {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
+        0%   { opacity: 0; transform: translateY(0); }
+        20%  { opacity: 1; }
+        80%  { opacity: 1; }
+        100% { opacity: 0; transform: translateY(-10px); }
+    }
+    
+    .so-label {
+        display: inline-flex;
+        align-items: baseline;
+        font-size: 14px;
+        color: var(--text-dim);
+        user-select: none;
+        white-space: nowrap;
+        margin-left: 2px;
+    }
+
+    .so-label span {
+        display: inline-block;
+        opacity: 0;
+        animation: so-wave 3.6s ease-in-out infinite;
+    }
+
+    .so-label span:nth-child(1)  { animation-delay: 0.00s; }
+    .so-label span:nth-child(2)  { animation-delay: 0.08s; }
+    .so-label span:nth-child(3)  { animation-delay: 0.16s; }
+    .so-label span:nth-child(4)  { animation-delay: 0.24s; }
+    .so-label span:nth-child(5)  { animation-delay: 0.32s; }
+    .so-label span:nth-child(6)  { animation-delay: 0.40s; }
+    .so-label span:nth-child(7)  { animation-delay: 0.48s; }
+    .so-label span:nth-child(8)  { animation-delay: 0.56s; }
+    .so-label span:nth-child(9)  { animation-delay: 0.64s; }
+    .so-label span:nth-child(10) { animation-delay: 0.72s; }
+    .so-label span:nth-child(11) { animation-delay: 0.80s; }
+    .so-label span:nth-child(12) { animation-delay: 0.88s; }
+
+    @keyframes so-wave {
+        0%   { opacity: 0; transform: translateY(5px);  }
+        18%  { opacity: 1; transform: translateY(0);    }
+        55%  { opacity: 1; transform: translateY(0);    }
+        72%  { opacity: 0; transform: translateY(-5px); }
+        100% { opacity: 0; transform: translateY(-5px); }
     }
 
     .cat {
@@ -170,33 +211,9 @@
         transition: .2s ease;
     }
 
-    .btn:hover {
-        background: var(--btn-hover);
-    }
-
-    .btn svg {
-        opacity: .8;
-    }
-
-    .footer-theme {
-        background: none;
-        border: none;
-        color: inherit;
-        cursor: pointer;
-        padding: 0;
-        vertical-align: middle;
-        display: inline-flex;
-        align-items: center;
-        transition: opacity .2s;
-    }
-
-    .footer-theme:hover {
-        opacity: .6;
-    }
-
-    .btn-changelog {
-        cursor: pointer;
-    }
+    .btn:hover { background: var(--btn-hover); }
+    .btn svg { opacity: .8; }
+    .btn-changelog { cursor: pointer; }
 
     .modal-overlay {
         display: none;
@@ -209,9 +226,7 @@
         backdrop-filter: blur(4px);
     }
 
-    .modal-overlay.active {
-        display: flex;
-    }
+    .modal-overlay.active { display: flex; }
 
     .modal {
         background: var(--bg);
@@ -231,10 +246,7 @@
         padding: 16px 20px;
     }
 
-    .modal-title {
-        font-size: 16px;
-        font-weight: 600;
-    }
+    .modal-title { font-size: 16px; font-weight: 600; }
 
     .modal-close {
         background: none;
@@ -247,9 +259,7 @@
         transition: color .2s;
     }
 
-    .modal-close:hover {
-        color: var(--text);
-    }
+    .modal-close:hover { color: var(--text); }
 
     .modal-body {
         padding: 20px;
@@ -263,28 +273,14 @@
         border-top: 1px solid var(--btn-border);
     }
 
-    .cl-date {
-        font-size: 11px;
-        color: var(--text-dim);
-        margin-bottom: 4px;
-    }
-
-    .cl-version {
-        font-size: 13px;
-        font-weight: 600;
-        margin-bottom: 12px;
-    }
-
-    .cl-list {
-        list-style: none;
-        padding: 0;
-    }
+    .cl-date    { font-size: 11px; color: var(--text-dim); margin-bottom: 4px; }
+    .cl-version { font-size: 13px; font-weight: 600; margin-bottom: 12px; }
+    .cl-list    { list-style: none; padding: 0; }
 
     .cl-list li {
         font-size: 13px;
         color: var(--text-muted);
-        padding: 4px 0;
-        padding-left: 3ch;
+        padding: 4px 0 4px 3ch;
         position: relative;
     }
 
@@ -293,7 +289,6 @@
         position: absolute;
         left: 0;
         width: 2ch;
-        text-align: left;
         color: var(--text-dim);
     }
 
@@ -310,7 +305,6 @@
         position: absolute;
         left: 0;
         width: 2ch;
-        text-align: left;
         color: var(--text-dim);
     }
 
@@ -327,28 +321,27 @@
         position: absolute;
         left: 0;
         width: 2ch;
-        text-align: left;
         color: var(--text-dim);
     }
 
-    .icon-sun,
-    .icon-moon {
-        display: none;
-    }
-
-    /* Светлая тема — показываем луну */
-    .footer-theme .icon-moon {
+    .footer-theme {
+        background: none;
+        border: none;
+        color: inherit;
+        cursor: pointer;
+        padding: 0;
+        vertical-align: middle;
         display: inline-flex;
+        align-items: center;
+        transition: opacity .2s;
     }
 
-    /* Тёмная тема — показываем солнце */
-    [data-theme="dark"] .footer-theme .icon-moon {
-        display: none;
-    }
+    .footer-theme:hover { opacity: .6; }
 
-    [data-theme="dark"] .footer-theme .icon-sun {
-        display: inline-flex;
-    }
+    .icon-sun, .icon-moon { display: none; }
+    .footer-theme .icon-moon                      { display: inline-flex; }
+    [data-theme="dark"] .footer-theme .icon-moon  { display: none; }
+    [data-theme="dark"] .footer-theme .icon-sun   { display: inline-flex; }
 
     .meta {
         font-size: 12px;
@@ -361,6 +354,66 @@
         display: block;
         border-radius: 10px;
         border: 1px solid var(--img-border);
+        transition: opacity .4s;
+    }
+
+    .def-layout {
+        display: flex;
+        align-items: flex-start;
+        gap: 24px;
+        margin-bottom: 32px;
+    }
+
+    .def-img {
+        max-width: 340px;
+        width: 100%;
+        display: block;
+        border-radius: 10px;
+        border: 1px solid var(--img-border);
+        transition: opacity .4s;
+        flex-shrink: 0;
+    }
+
+    .def-side {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding-top: 2px;
+        min-width: 0;
+    }
+
+    .def-side-top {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .def-info {
+        font-size: 12px;
+        color: var(--text-muted);
+        line-height: 1.7;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .def-info-row {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .def-info-label {
+        font-size: 10px;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+    }
+
+    .def-info-val {
+        font-size: 12px;
+        color: var(--text-muted);
+        line-height: 1.5;
     }
 
     footer {
@@ -371,182 +424,224 @@
     }
 
     @media (max-width: 600px) {
-        .title-row {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 16px;
-        }
-
-        h1 {
-            font-size: 32px;
-        }
-
-        .actions {
-            flex-direction: column;
-            align-items: flex-start;
-        }
+        .title-row { flex-direction: column; align-items: flex-start; gap: 16px; }
+        h1 { font-size: 32px; }
+        .actions { flex-direction: column; align-items: flex-start; }
+        .def-layout { flex-direction: column; }
+        .def-img { max-width: 100%; }
     }
 </style>
 </head>
 <body>
 
+<div class="tabs-sticky">
+    <div class="tabs-inner">
+        <button class="tab tab-active" data-tab="nowcore">NowCore</button>
+        <button class="tab" data-tab="defender">Defender Control</button>
+    </div>
+</div>
+
 <main>
     <div class="content">
 
-        <div class="title-row">
+        <div class="tab-body tab-body-active" id="body-nowcore">
 
-            <div class="title-left">
-                <h1>NowCore</h1>
-                <pre class="cat">     \    /\
+            <div class="title-row">
+                <div class="title-left">
+                    <h1>NowCore</h1>
+                    <pre class="cat">     \    /\
       )  ( ')
      (  /  )
       \(__)|</pre>
+                </div>
+                <div class="beta">
+                    <span>B</span><span>e</span><span>t</span><span>a</span>
+                </div>
             </div>
 
-            <div class="beta">
-                <span>B</span>
-                <span>e</span>
-                <span>t</span>
-                <span>a</span>
+            <div class="actions">
+                <a href="https://github.com/lazxvll/nowcore/releases/latest" class="btn" id="downloadBtn" download aria-label="Скачать">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 4V16M12 16L7 11M12 16L17 11M5 20H19"
+                              stroke="currentColor" stroke-width="2"
+                              stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+
+                <a href="https://discord.gg/WaGBs5jgea" class="btn" target="_blank" aria-label="Discord">
+                    <svg viewBox="0 0 127.14 96.36" width="16" height="16" fill="currentColor">
+                        <path d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0 105.89 105.89 0 0 0 19.39 8.09C2.79 32.65-1.71 56.6.54 80.21A105.73 105.73 0 0 0 32.71 96.36a77.7 77.7 0 0 0 6.89-11.25 68.42 68.42 0 0 1-10.84-5.18c.91-.66 1.8-1.34 2.66-2A75.57 75.57 0 0 0 95.72 77.9c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 0 1-10.86 5.19 77 77 0 0 0 6.89 11.24A105.25 105.25 0 0 0 126.6 80.22C129.24 52.84 122.09 29.11 107.7 8.07ZM42.45 65.69C35.94 65.69 30.6 59.76 30.6 52.5S35.84 39.31 42.45 39.31 54.3 45.3 54.3 52.5 49 65.69 42.45 65.69Zm42.24 0c-6.51 0-11.85-5.93-11.85-13.19S78.08 39.31 84.69 39.31 96.54 45.3 96.54 52.5 91.3 65.69 84.69 65.69Z"/>
+                    </svg>
+                </a>
+
+                <a href="https://steamcommunity.com/tradeoffer/new/?partner=324269455&token=09MTw2th" class="btn" target="_blank" aria-label="Donate">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="1" x2="12" y2="23"/>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                </a>
+
+                <button class="btn btn-changelog" id="changelogBtn" aria-label="Changelog">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <polyline points="10 9 9 9 8 9"/>
+                    </svg>
+                </button>
+
+                <div class="meta">Win 10/11<br>Version 0.0.3 (beta)</div>
             </div>
 
+            <img src="https://github.com/lazxvll/nowcore/blob/main/menu_dark.png?raw=true"
+                 alt="NowCore" class="menu-image" id="menuImg" style="opacity:0">
         </div>
 
-        <div class="actions">
+        <div class="tab-body" id="body-defender">
 
-            <!-- Скачать -->
-            <a href="https://github.com/lazxvll/nowcore/releases/latest" class="btn" id="downloadBtn" download aria-label="Скачать">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 4V16M12 16L7 11M12 16L17 11M5 20H19"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"/>
-                </svg>
-            </a>
-
-            <!-- Discord -->
-            <a href="https://discord.gg/WaGBs5jgea" class="btn" target="_blank" aria-label="Discord">
-                <svg viewBox="0 0 127.14 96.36" width="16" height="16" fill="currentColor">
-                    <path d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0 105.89 105.89 0 0 0 19.39 8.09C2.79 32.65-1.71 56.6.54 80.21A105.73 105.73 0 0 0 32.71 96.36a77.7 77.7 0 0 0 6.89-11.25 68.42 68.42 0 0 1-10.84-5.18c.91-.66 1.8-1.34 2.66-2A75.57 75.57 0 0 0 95.72 77.9c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 0 1-10.86 5.19 77 77 0 0 0 6.89 11.24A105.25 105.25 0 0 0 126.6 80.22C129.24 52.84 122.09 29.11 107.7 8.07ZM42.45 65.69C35.94 65.69 30.6 59.76 30.6 52.5S35.84 39.31 42.45 39.31 54.3 45.3 54.3 52.5 49 65.69 42.45 65.69Zm42.24 0c-6.51 0-11.85-5.93-11.85-13.19S78.08 39.31 84.69 39.31 96.54 45.3 96.54 52.5 91.3 65.69 84.69 65.69Z"/>
-                </svg>
-            </a>
-
-            <!-- Donate -->
-            <a href="https://steamcommunity.com/tradeoffer/new/?partner=324269455&token=09MTw2th" class="btn" target="_blank" aria-label="Donate">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="12" y1="1" x2="12" y2="23"/>
-                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                </svg>
-            </a>
-
-            <!-- Changelog -->
-            <button class="btn btn-changelog" id="changelogBtn" title="Changelog" aria-label="Changelog">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                    <polyline points="14 2 14 8 20 8"/>
-                    <line x1="16" y1="13" x2="8" y2="13"/>
-                    <line x1="16" y1="17" x2="8" y2="17"/>
-                    <polyline points="10 9 9 9 8 9"/>
-                </svg>
-            </button>
-
-            <!-- Changelog Modal -->
-            <div class="modal-overlay" id="changelogModal">
-                <div class="modal">
-                    <div class="modal-header">
-                        <span class="modal-title">Changelog</span>
-                        <button class="modal-close" id="changelogClose">&times;</button>
+            <div class="title-row">
+                <div class="title-left">
+                    <h1>Defender Control</h1>
+                    <pre class="cat">
+  ╱|、
+ (˚ˎ。7
+ |、˜〵
+ じしˍ,)ノ</pre>
+                    <div class="so-label" aria-label="s/o Enobraed">
+                        <span>s</span><span>/</span><span>o</span><span>&nbsp;</span>
+                        <span>E</span><span>n</span><span>o</span><span>b</span>
+                        <span>r</span><span>a</span><span>e</span><span>d</span>
                     </div>
-                    <div class="modal-body">
-                        <div class="cl-entry">
-                            <div class="cl-date">23.07.2026</div>
-                            <div class="cl-version">v0.0.3</div>
-                            <div class="cl-section">Очистка</div>
-                            <ul class="cl-list">
-                                <li>Убраны консольные окна, при очистке.</li>
-                            </ul>
-                            <div class="cl-section">Глобально</div>
-                            <ul class="cl-list">
-                                <li>Исправление мелких багов.</li>
-                                <li>И еще много изменений, я потерял полный changelog ;)</li>
-                            </ul>
-                            <div class="cl-section">Твики</div>
-                            <div class="cl-sub">Система</div>
-                            <ul class="cl-list">
-                                <li>Обновлен Отключить Задачи NGEN и фоновой оптимизации .NET</li>
-                            </ul>
-                            <div class="cl-sub">NTFS</div>
-                            <ul class="cl-list">
-                                <li>Добавлен NTFS в невыгружаемую память</li>
-                                <li>Добавлен Отключить Last Access Time</li>
-                                <li>Добавлен Отключить Dev Drive</li>
-                                <li>Добавлен Включить TRIM для SSD</li>
-                                <li>Обновлен Включить Использование памяти NTFS</li>
-                                <li>Обновлен Отключить 8.3 имена</li>
-                                <li>Обновлен Отключить Задачи проверки диска</li>
-                                <li>Обновлен Увеличить Резерв MFT</li>
-                            </ul>
-                            <div class="cl-sub">Периферия</div>
-                            <ul class="cl-list">
-                                <li>Добавлен Отключить Синхронизацию настроек устройств ввода</li>
-                            </ul>
-                            <div class="cl-sub">Устройства</div>
-                            <ul class="cl-list">
-                                <li>Обновлен Отключить Дополнительные компоненты виртуализации</li>
-                                <li>Обновлен Отключить Bluetooth</li>
-                                <li>Обновлен Отключить Hyper-V и гипервизор</li>
-                            </ul>
-                            <div class="cl-sub">Компоненты</div>
-                            <ul class="cl-list">
-                                <li>Добавлен Отключить Задачи OneDrive</li>
-                                <li>Добавлен Отключить Плановые проверки Защитника Windows</li>
-                                <li>Обновлен Отключить Обновление Microsoft Edge</li>
-                                <li>Обновлен Отключить Задачи modern apps и AppX</li>
-                                <li>Обновлен Отключить Задачи совместимости Windows</li>
-                                <li>Обновлен Отключить Телеметрию Windows</li>
-                                <li>Обновлен Отключить Родительский контроль</li>
-                                <li>Обновлен Отключить Карты и офлайн-карты</li>
-                            </ul>
+                </div>
+            </div>
+
+            <div class="def-layout">
+                <img src="defender.png" alt="Defender Control" class="def-img"
+                     style="opacity:0" onload="this.style.opacity='1'">
+
+                <div class="def-side">
+                    <div class="def-side-top">
+                        <a href="https://github.com/lazxvll/Defender-Control/releases/download/v1.0/Defender.Control.zip" class="btn" id="defDownloadBtn" download aria-label="Скачать">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="7 10 12 15 17 10"/>
+                                <line x1="12" y1="15" x2="12" y2="3"/>
+                            </svg>
+                        </a>
+                        <div class="meta">Win 10/11<br>Version 1.0</div>
+                    </div>
+
+                    <div class="def-info">
+                        <div class="def-info-row">
+                            <span class="def-info-label">Что делает</span>
+                            <span class="def-info-val">Полностью отключает Microsoft Defender.</span>
                         </div>
-                        <div class="cl-entry">
-                            <div class="cl-date">24.06.2026</div>
-                            <div class="cl-version">v0.0.2</div>
-                            <ul class="cl-list">
-                                <li>Проверка обновлённой версии</li>
-                                <li>Оптимизирован UI</li>
-                                <li>ЛКМ по реестру — открывает путь твика</li>
-                                <li>ПКМ по реестру — копирует информацию твика</li>
-                            </ul>
+                        <div class="def-info-row">
+                            <span class="def-info-label">Отключение</span>
+                            <span class="def-info-val">3 этапа перезагрузки. Обходит Tamper Protection через Safe Mode и захват владения реестром. 120+ настроек реестра, службы/драйверы Defender, SmartScreen, DISM, Windows Update.</span>
                         </div>
-                        <div class="cl-entry">
-                            <div class="cl-date">24.06.2026</div>
-                            <div class="cl-version">v0.0.1 (beta)</div>
-                            <ul class="cl-list">
-                                <li>Первый релиз</li>
-                            </ul>
+                        <div class="def-info-row">
+                            <span class="def-info-label">Статус</span>
+                            <span class="def-info-val">Аудит служб Defender + Windows Update, драйверов, процессов, реестра, WMI, SmartScreen.</span>
+                        </div>
+                        <div class="def-info-row">
+                            <span class="def-info-label">Стек</span>
+                            <span class="def-info-val">PowerShell + BAT-обёртка, логи, автозапуск от администратора.</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="meta">
-                Win 10/11<br>
-                Version 0.0.3 (beta)
-            </div>
-
         </div>
-
-        <img src="https://github.com/lazxvll/nowcore/blob/main/menu_dark.png?raw=true" alt="NowCore" class="menu-image" id="menuImg" style="opacity:0">
 
     </div>
 </main>
+
+<div class="modal-overlay" id="changelogModal">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="modal-title">Changelog</span>
+            <button class="modal-close" id="changelogClose">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="cl-entry">
+                <div class="cl-date">23.07.2026</div>
+                <div class="cl-version">v0.0.3</div>
+                <div class="cl-section">Очистка</div>
+                <ul class="cl-list">
+                    <li>Убраны консольные окна при очистке.</li>
+                </ul>
+                <div class="cl-section">Глобально</div>
+                <ul class="cl-list">
+                    <li>Исправление мелких багов.</li>
+                    <li>И еще много изменений, я потерял полный changelog ;)</li>
+                </ul>
+                <div class="cl-section">Твики</div>
+                <div class="cl-sub">Система</div>
+                <ul class="cl-list">
+                    <li>Обновлен Отключить Задачи NGEN и фоновой оптимизации .NET</li>
+                </ul>
+                <div class="cl-sub">NTFS</div>
+                <ul class="cl-list">
+                    <li>Добавлен NTFS в невыгружаемую память</li>
+                    <li>Добавлен Отключить Last Access Time</li>
+                    <li>Добавлен Отключить Dev Drive</li>
+                    <li>Добавлен Включить TRIM для SSD</li>
+                    <li>Обновлен Включить Использование памяти NTFS</li>
+                    <li>Обновлен Отключить 8.3 имена</li>
+                    <li>Обновлен Отключить Задачи проверки диска</li>
+                    <li>Обновлен Увеличить Резерв MFT</li>
+                </ul>
+                <div class="cl-sub">Периферия</div>
+                <ul class="cl-list">
+                    <li>Добавлен Отключить Синхронизацию настроек устройств ввода</li>
+                </ul>
+                <div class="cl-sub">Устройства</div>
+                <ul class="cl-list">
+                    <li>Обновлен Отключить Дополнительные компоненты виртуализации</li>
+                    <li>Обновлен Отключить Bluetooth</li>
+                    <li>Обновлен Отключить Hyper-V и гипервизор</li>
+                </ul>
+                <div class="cl-sub">Компоненты</div>
+                <ul class="cl-list">
+                    <li>Добавлен Отключить Задачи OneDrive</li>
+                    <li>Добавлен Отключить Плановые проверки Защитника Windows</li>
+                    <li>Обновлен Отключить Обновление Microsoft Edge</li>
+                    <li>Обновлен Отключить Задачи modern apps и AppX</li>
+                    <li>Обновлен Отключить Задачи совместимости Windows</li>
+                    <li>Обновлен Отключить Телеметрию Windows</li>
+                    <li>Обновлен Отключить Родительский контроль</li>
+                    <li>Обновлен Отключить Карты и офлайн-карты</li>
+                </ul>
+            </div>
+            <div class="cl-entry">
+                <div class="cl-date">24.06.2026</div>
+                <div class="cl-version">v0.0.2</div>
+                <ul class="cl-list">
+                    <li>Проверка обновлённой версии</li>
+                    <li>Оптимизирован UI</li>
+                    <li>ЛКМ по реестру — открывает путь твика</li>
+                    <li>ПКМ по реестру — копирует информацию твика</li>
+                </ul>
+            </div>
+            <div class="cl-entry">
+                <div class="cl-date">24.06.2026</div>
+                <div class="cl-version">v0.0.1 (beta)</div>
+                <ul class="cl-list">
+                    <li>Первый релиз</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 
 <footer>
     NowCore · 2026 ·
     <button class="footer-theme" id="themeToggle" aria-label="Сменить тему">
         <svg class="icon-sun" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
         </svg>
         <svg class="icon-moon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
@@ -555,12 +650,13 @@
 </footer>
 
 <script>
-(function() {
+(function () {
     var toggle = document.getElementById('themeToggle');
-    var img = document.getElementById('menuImg');
-    var saved = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    var img    = document.getElementById('menuImg');
+    var saved  = localStorage.getItem('theme') ||
+                 (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
 
-    function apply(theme) {
+    function applyTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
         img.src = theme === 'dark'
             ? 'https://github.com/lazxvll/nowcore/blob/main/menu_dark.png?raw=true'
@@ -568,41 +664,52 @@
         img.style.opacity = '1';
     }
 
-    apply(saved);
+    applyTheme(saved);
 
-    toggle.addEventListener('click', function() {
-        var current = document.documentElement.getAttribute('data-theme');
-        var next = current === 'dark' ? 'light' : 'dark';
+    toggle.addEventListener('click', function () {
+        var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         localStorage.setItem('theme', next);
-        apply(next);
+        applyTheme(next);
     });
 
-    var changelogBtn = document.getElementById('changelogBtn');
+    var changelogBtn   = document.getElementById('changelogBtn');
     var changelogModal = document.getElementById('changelogModal');
     var changelogClose = document.getElementById('changelogClose');
 
-    changelogBtn.addEventListener('click', function() {
-        changelogModal.classList.add('active');
-    });
-
-    changelogClose.addEventListener('click', function() {
-        changelogModal.classList.remove('active');
-    });
-
-    changelogModal.addEventListener('click', function(e) {
-        if (e.target === changelogModal) {
-            changelogModal.classList.remove('active');
-        }
+    changelogBtn.addEventListener('click',   function () { changelogModal.classList.add('active'); });
+    changelogClose.addEventListener('click', function () { changelogModal.classList.remove('active'); });
+    changelogModal.addEventListener('click', function (e) {
+        if (e.target === changelogModal) changelogModal.classList.remove('active');
     });
 
     fetch('https://api.github.com/repos/lazxvll/nowcore/releases/latest')
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+            var asset = data.assets && data.assets[0];
+            if (asset) document.getElementById('downloadBtn').href = asset.browser_download_url;
+        })
+        .catch(function () {});
+
+    var tabs   = document.querySelectorAll('.tab');
+    var bodies = document.querySelectorAll('.tab-body');
+
+    tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            tabs.forEach(function (t)   { t.classList.remove('tab-active'); });
+            tab.classList.add('tab-active');
+            bodies.forEach(function (b) { b.classList.remove('tab-body-active'); });
+            document.getElementById('body-' + tab.getAttribute('data-tab')).classList.add('tab-body-active');
+        });
+    });
+
+    fetch('https://api.github.com/repos/lazxvll/Defender-Control/releases/latest')
         .then(function(r) { return r.json(); })
         .then(function(data) {
             var asset = data.assets && data.assets[0];
             if (asset) {
-                document.getElementById('downloadBtn').href = asset.browser_download_url;
+                document.getElementById('defDownloadBtn').href = asset.browser_download_url;
             }
-        });
+        })['catch'](function() {});
 })();
 </script>
 
