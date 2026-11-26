@@ -16,29 +16,35 @@
 
 <style>
     :root {
-        --bg: #ffffff;
-        --text: #1a1a1a;
-        --text-muted: rgba(0,0,0,0.45);
-        --text-dim: rgba(0,0,0,0.25);
-        --btn-bg: rgba(0,0,0,0.06);
-        --btn-border: rgba(0,0,0,0.10);
-        --btn-hover: rgba(0,0,0,0.10);
-        --btn-color: #1a1a1a;
-        --img-border: rgba(0,0,0,0.08);
-        --footer-color: rgba(0,0,0,0.15);
+        --bg: #f5f5f5;
+        --text: #282828;
+        --text-muted: #646464;
+        --text-dim: #9b9b9b;
+        --btn-bg: #ececec;
+        --btn-border: #d2d2d2;
+        --btn-hover: #e4e4e4;
+        --btn-color: #282828;
+        --img-border: #d2d2d2;
+        --footer-color: #b4b4b4;
+        --accent: #3c8a50;
+        --danger: #8c3c3c;
+        --divider: #d2d2d2;
     }
 
     [data-theme="dark"] {
-        --bg: rgb(16,16,16);
-        --text: #ffffff;
-        --text-muted: rgba(255,255,255,0.45);
-        --text-dim: rgba(255,255,255,0.25);
-        --btn-bg: rgba(255,255,255,0.06);
-        --btn-border: rgba(255,255,255,0.10);
-        --btn-hover: rgba(255,255,255,0.10);
-        --btn-color: #ffffff;
-        --img-border: rgba(255,255,255,0.08);
-        --footer-color: rgba(255,255,255,0.15);
+        --bg: #101010;
+        --text: #dcdcdc;
+        --text-muted: #828282;
+        --text-dim: #484848;
+        --btn-bg: #141414;
+        --btn-border: #1c1c1c;
+        --btn-hover: #1a1a1a;
+        --btn-color: #dcdcdc;
+        --img-border: #1c1c1c;
+        --footer-color: #2a2a2a;
+        --accent: #91c391;
+        --danger: #c88282;
+        --divider: #1c1c1c;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -73,18 +79,23 @@
     .tab {
         background: none;
         border: none;
-        border-bottom: 2px solid transparent;
         color: var(--text-muted);
         cursor: pointer;
         font-family: inherit;
         font-size: 14px;
         padding: 12px 20px;
-        transition: color .2s, border-color .2s;
-        margin-bottom: -1px;
+        transition: color .2s;
+    }
+
+    .tab::before {
+        content: "- ";
+        color: var(--text-dim);
     }
 
     .tab:hover { color: var(--text); }
-    .tab.tab-active { color: var(--text); border-bottom-color: var(--text); }
+    .tab:hover::before { color: var(--text-muted); }
+    .tab.tab-active { color: var(--text); }
+    .tab.tab-active::before { color: var(--text); }
 
     main {
         flex: 1;
@@ -115,9 +126,21 @@
     }
 
     h1 {
-        font-size: 40px;
+        font-size: 38px;
         font-weight: 600;
         letter-spacing: -1px;
+        position: relative;
+        padding-left: 12px;
+    }
+
+    h1::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 8px;
+        bottom: 8px;
+        width: 2px;
+        background: var(--accent);
     }
 
     .beta {
@@ -205,25 +228,28 @@
         justify-content: center;
         background: var(--btn-bg);
         border: 1px solid var(--btn-border);
-        border-radius: 8px;
+        border-radius: 4px;
         color: var(--btn-color);
         text-decoration: none;
-        transition: .2s ease;
+        transition: background .2s, border-color .2s, color .2s;
     }
 
-    .btn:hover { background: var(--btn-hover); }
+    .btn:hover {
+        background: var(--btn-hover);
+        border-color: var(--text-dim);
+    }
     .btn svg { opacity: .8; }
+    .btn:hover svg { opacity: 1; }
     .btn-changelog { cursor: pointer; }
 
     .modal-overlay {
         display: none;
         position: fixed;
         inset: 0;
-        background: rgba(0,0,0,.5);
+        background: rgba(0,0,0,.65);
         z-index: 100;
         justify-content: center;
         align-items: center;
-        backdrop-filter: blur(4px);
     }
 
     .modal-overlay.active { display: flex; }
@@ -231,12 +257,12 @@
     .modal {
         background: var(--bg);
         border: 1px solid var(--btn-border);
-        border-radius: 16px;
+        border-radius: 6px;
         width: 520px;
         max-width: 90vw;
         max-height: 75vh;
         overflow: hidden;
-        box-shadow: 0 20px 60px rgba(0,0,0,.4);
+        box-shadow: 0 18px 50px rgba(0,0,0,.25);
     }
 
     .modal-header {
@@ -244,6 +270,7 @@
         justify-content: space-between;
         align-items: center;
         padding: 16px 20px;
+        border-bottom: 1px solid var(--btn-border);
     }
 
     .modal-title { font-size: 16px; font-weight: 600; }
@@ -371,7 +398,7 @@
     .menu-image {
         width: 100%;
         display: block;
-        border-radius: 10px;
+        border-radius: 4px;
         border: 1px solid var(--img-border);
         transition: opacity .4s;
     }
@@ -387,7 +414,7 @@
         max-width: 340px;
         width: 100%;
         display: block;
-        border-radius: 10px;
+        border-radius: 4px;
         border: 1px solid var(--img-border);
         transition: opacity .4s;
         flex-shrink: 0;
@@ -479,7 +506,7 @@
             </div>
 
             <div class="actions">
-                <a href="https://github.com/lazxvll/nowcore/releases/download/v0.0.3/NowCore.exe" class="btn" id="downloadBtn" download aria-label="Скачать">
+                <a href="https://github.com/lazxvll/nowcore/releases/download/v0.0.5/NowCore.exe" class="btn" id="downloadBtn" download aria-label="Скачать">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                         <path d="M12 4V16M12 16L7 11M12 16L17 11M5 20H19"
                               stroke="currentColor" stroke-width="2"
@@ -504,7 +531,7 @@
                     </svg>
                 </button>
 
-                <div class="meta">Win 10/11<br>Version 0.0.4 (beta)</div>
+                <div class="meta">Win 10/11<br>Version 0.0.5 (beta)</div>
             </div>
 
             <img src="menu_dark.png"
@@ -578,6 +605,83 @@
             <button class="modal-close" id="changelogClose">&times;</button>
         </div>
         <div class="modal-body">
+            <div class="cl-entry">
+                <div class="cl-date">26.11.2026</div>
+                <div class="cl-version">v0.0.5</div>
+                <div class="cl-section">Видеокарта</div>
+                <ul class="cl-list">
+                    <li>Добавлено: «Отключить телеметрию и логирование NVIDIA»</li>
+                    <li>Добавлено: «Отключить подсветку NVIDIA»</li>
+                    <li>Обновлено: «Отключить HDMI DisplayPort аудио»</li>
+                </ul>
+                <div class="cl-section">Периферия</div>
+                <ul class="cl-list">
+                    <li>Добавлено: «Отключить сбор данных ввода»</li>
+                </ul>
+                <div class="cl-section">Интернет</div>
+                <ul class="cl-list">
+                    <li>Добавлено: «Перевести сеть на CX-тип»</li>
+                    <li>Исправлено: «Отключить Мониторинг использования сети»</li>
+                </ul>
+                <div class="cl-section">Система</div>
+                <ul class="cl-list">
+                    <li>Добавлено: «Настроить приоритеты игр»</li>
+                    <li>Добавлено: «Настроить приоритет процессов (Windows 10)»</li>
+                </ul>
+                <div class="cl-section">Устройства</div>
+                <ul class="cl-list">
+                    <li>Обновлено: «Отключить Датчики»</li>
+                    <li>Обновлено: «Отключить Камеры и захват»</li>
+                    <li>Обновлено: «Отключить Драйверы батареи»</li>
+                    <li>Обновлено: «Отключить Неиспользуемые драйверы платформы AMD»</li>
+                    <li>Исправлено: «Отключить Виртуальные драйверы Hyper-V»</li>
+                    <li>Обновлено: «Отключить Legacy-порты и шины»</li>
+                </ul>
+                <div class="cl-section">NTFS</div>
+                <ul class="cl-list">
+                    <li>Исправлено: «Отключить Dev Drive»</li>
+                    <li>Добавлено: «Включить длинные пути»</li>
+                </ul>
+                <div class="cl-section">Компоненты</div>
+                <ul class="cl-list">
+                    <li>Обновлено: «Отключить Телеметрию Windows»</li>
+                    <li>Обновлено: «Отключить Локацию»</li>
+                    <li>Обновлено: «Отключить Диагностику Windows»</li>
+                    <li>Обновлено: «Отключить EFS»</li>
+                    <li>Обновлено: «Отключить Performance Counters служб»</li>
+                    <li>Добавлено: «Отключить сетевые службы Windows Media Player»</li>
+                    <li>Добавлено: «Отключить автозапуск съёмных носителей»</li>
+                    <li>Добавлено: «Укрепить безопасность аутентификации»</li>
+                    <li>Удалено: «Отключить Активацию Windows»</li>
+                    <li>Удалено: «Отключить Службы Discord и Steam»</li>
+                </ul>
+                <div class="cl-section">Интерфейс</div>
+                <ul class="cl-list">
+                    <li>Добавлено: «Включить секунды в часах»</li>
+                    <li>Добавлено: «Показывать день недели в часах»</li>
+                    <li>Добавлено: «Показывать все значки в трее»</li>
+                    <li>Добавлено: «Показывать версию Windows на рабочем столе»</li>
+                    <li>Добавлено: «Включить старое меню громкости»</li>
+                    <li>Добавлено: «Отключить рекламу и рекомендации Windows»</li>
+                    <li>Обновлено: «Отключить Анимации и эффекты DWM»</li>
+                    <li>Обновлено: «Запускать окна с папками в отдельном процессе»</li>
+                    <li>Исправлено: «Отключить Главная»</li>
+                    <li>Исправлено: «Отключить Галерея»</li>
+                    <li>Исправлено: «Отключить Папки из Этот компьютер»</li>
+                </ul>
+                <div class="cl-section">Очистка</div>
+                <ul class="cl-list">
+                    <li>Удалено: папка «Prefetch»</li>
+                    <li>Исправлено: «Очистка сетевых профилей»</li>
+                </ul>
+            </div>
+            <div class="cl-entry">
+                <div class="cl-date">25.11.2026</div>
+                <div class="cl-version">v0.0.4</div>
+                <ul class="cl-list">
+                    <li>Исправление багов.</li>
+                </ul>
+            </div>
             <div class="cl-entry">
                 <div class="cl-date">23.07.2026</div>
                 <div class="cl-version">v0.0.3</div>
@@ -767,4 +871,3 @@
 
 </body>
 </html>
-
